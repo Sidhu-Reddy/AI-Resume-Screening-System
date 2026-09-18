@@ -1,58 +1,56 @@
-# AI Resume Screening System — Week 1: Project Planning and Dataset Scoping
+# AI Resume Screening System — Week 2: Data Cleaning and Transformation Documentation
 
 **Virtual Data Science Apprentice — Python Specialist Intern**
-**Task period:** 18-Sep-2026 to 25-Sep-2026 (Week 1 of 4)
+**Task period:** 26-Sep-2026 to 02-Oct-2026 (Week 2 of 4)
 **Intern:** [Your Name]
 
 ## Overview
 
-This repository/folder contains the Week 1 deliverable for the **AI Resume Screening System** internship project: a project plan that defines the problem, objectives, scope, candidate datasets, and high-level workflow for building a Python-based system that automatically screens and ranks resumes against a job description.
+This repository/folder contains the Week 2 deliverable for the **AI Resume Screening System** internship project: a documented data cleaning and transformation strategy that converts the raw, inconsistent resume text (selected in Week 1) into a clean, structured, model-ready dataset.
 
 ## Contents
 
 | File | Description |
 |------|-------------|
-| `Week1_Project_Planning_Dataset_Scoping.docx` | Full project plan report (objectives, scope, dataset comparison, workflow, tools, risks, effort estimate) |
+| `Week2_Data_Cleaning_Transformation.docx` | Full cleaning & transformation report (data quality issues, cleaning pipeline, missing-value rules, deduplication, feature engineering, pseudo-code) |
 
-## Problem Statement
+## Data Quality Issues Addressed
 
-Recruiters often receive hundreds of resumes per job opening, and manually screening each one for relevant skills and experience is slow and inconsistent. This project frames resume screening as a **text classification and similarity-ranking problem**: given a labeled corpus of resumes and a target job description, build a Python pipeline that predicts each resume's job category and a fit score relative to the job description.
+- Duplicate / near-duplicate resumes
+- Missing fields (blank category labels, missing sections)
+- Inconsistent formatting from PDF extraction (bullets, whitespace, artifacts)
+- Encoding issues (non-UTF-8 characters, smart quotes)
+- Inconsistent skill/degree terminology (e.g., "ML" vs. "Machine Learning")
+- Length outliers (extremely short or long resumes)
+- Class imbalance across job categories
 
-## Project Objectives
-
-- Build an end-to-end Python pipeline from raw resume text to a ranked candidate list.
-- Establish a clean, labeled dataset suitable for supervised learning.
-- Design a reproducible workflow: acquisition → cleaning → feature engineering → EDA → modeling → evaluation.
-- Quantify model performance with metrics a non-technical recruiter can interpret.
-- Document assumptions, limitations, and fairness considerations throughout.
-
-## Candidate Datasets Evaluated
-
-| Dataset | Source | Why it was considered |
-|---|---|---|
-| Resume Dataset | [Kaggle](https://www.kaggle.com/datasets/snehaanbhawal/resume-dataset) | ~2,400 resumes labeled across 24 job categories — **selected as the primary dataset** |
-| Resume Entities for NER | Kaggle | Entity-level annotations useful for skill/degree extraction |
-| LinkedIn Job Postings | [Kaggle](https://www.kaggle.com/datasets/arshkon/linkedin-job-postings) | Real job descriptions for resume-to-job similarity scoring |
-| O*NET Database | [onetonline.org](https://www.onetonline.org/) | Standardized skill/occupation taxonomy for normalization |
-
-## Planned High-Level Workflow
+## Cleaning & Transformation Pipeline
 
 ```
-Data Acquisition → Data Cleaning → Text Preprocessing → Feature Engineering
-       → Exploratory Data Analysis → Model Selection & Training → Evaluation & Reporting
+Ingestion & Deduplication → Missing Value Handling → Text Normalization
+   → Tokenization & Linguistic Cleaning → Entity & Skill Standardization
+   → Outlier Treatment → Feature Scaling & Encoding
 ```
+
+## Key Design Decisions
+
+- Rows missing a category label or resume body text are dropped (required for supervised learning); other missing fields are imputed with explicit placeholders and an `was_imputed` flag.
+- Duplicates are detected via exact-hash matching and near-duplicate detection using TF-IDF cosine similarity (≥0.95 threshold).
+- Skills are standardized against an O*NET-informed synonym dictionary.
+- Numeric features (years of experience, word count) are scaled with `StandardScaler` for distance-based models, left unscaled for tree-based models.
+- Every cleaning action is logged to a `cleaning_log.csv` for auditability.
 
 ## Tools & Python Libraries
 
-pandas, numpy, nltk, spaCy, scikit-learn, XGBoost, matplotlib, seaborn, pdfplumber / PyPDF2, python-docx, Jupyter Notebook
+pandas, numpy, re (regex), NLTK, spaCy, scikit-learn (`TfidfVectorizer`, `StandardScaler`), fuzzywuzzy / difflib, langdetect
 
 ## Estimated Effort
 
-30–35 hours across background research, objective/scope definition, workflow and tool planning, drafting, and revision.
+30–35 hours across research, implementation of cleaning/transformation logic, documentation, and validation.
 
 ## Next Steps
 
-Week 2 will use the dataset selected here to define and document a full data cleaning and transformation pipeline.
+Week 3 will perform exploratory data analysis on this cleaned dataset to inform feature selection and modeling decisions.
 
 ## Author
 

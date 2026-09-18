@@ -1,56 +1,58 @@
-# AI Resume Screening System — Week 2: Data Cleaning and Transformation Documentation
+# AI Resume Screening System — Week 3: Exploratory Data Analysis and Visualization Strategy
 
 **Virtual Data Science Apprentice — Python Specialist Intern**
-**Task period:** 26-Sep-2026 to 02-Oct-2026 (Week 2 of 4)
+**Task period:** 03-Oct-2026 to 09-Oct-2026 (Week 3 of 4)
 **Intern:** [Your Name]
 
 ## Overview
 
-This repository/folder contains the Week 2 deliverable for the **AI Resume Screening System** internship project: a documented data cleaning and transformation strategy that converts the raw, inconsistent resume text (selected in Week 1) into a clean, structured, model-ready dataset.
+This repository/folder contains the Week 3 deliverable for the **AI Resume Screening System** internship project: an exploratory data analysis (EDA) and visualization strategy built on the cleaned resume dataset from Week 2, aimed at understanding class balance, vocabulary structure, and data quality before modeling.
 
 ## Contents
 
 | File | Description |
 |------|-------------|
-| `Week2_Data_Cleaning_Transformation.docx` | Full cleaning & transformation report (data quality issues, cleaning pipeline, missing-value rules, deduplication, feature engineering, pseudo-code) |
+| `Week3_EDA_Visualization_Strategy.docx` | Full EDA report (objectives, planned visualizations, workflow, expected insights, mock-up layout) |
 
-## Data Quality Issues Addressed
+## EDA Objectives
 
-- Duplicate / near-duplicate resumes
-- Missing fields (blank category labels, missing sections)
-- Inconsistent formatting from PDF extraction (bullets, whitespace, artifacts)
-- Encoding issues (non-UTF-8 characters, smart quotes)
-- Inconsistent skill/degree terminology (e.g., "ML" vs. "Machine Learning")
-- Length outliers (extremely short or long resumes)
-- Class imbalance across job categories
+- Quantify class balance across job categories
+- Identify the most frequent and most distinctive skills/keywords per category
+- Characterize resume length and structural completeness
+- Surface residual data-quality anomalies before modeling
+- Translate every chart into a plain-language insight for a non-technical audience
 
-## Cleaning & Transformation Pipeline
+## Planned Visualizations
+
+| Visualization | Purpose |
+|---|---|
+| Bar chart of resumes per category | Reveal class imbalance |
+| Histogram / KDE of word count | Show resume length distribution and outliers |
+| Box plots by category | Compare length norms across categories |
+| Word clouds (TF-IDF weighted) | Surface distinctive terms per category |
+| Top-N TF-IDF term bar charts | Identify category-defining vocabulary |
+| Skill co-occurrence heatmap | Reveal commonly paired skills |
+| t-SNE / UMAP scatter plot | Visually assess category separability |
+| Missing-data completeness chart | Confirm Week 2 cleaning improvements |
+
+## EDA Workflow
 
 ```
-Ingestion & Deduplication → Missing Value Handling → Text Normalization
-   → Tokenization & Linguistic Cleaning → Entity & Skill Standardization
-   → Outlier Treatment → Feature Scaling & Encoding
+Load Cleaned Data → Univariate Analysis → Category-Level Analysis
+   → Text-Specific Analysis → Dimensionality Reduction → Insight Synthesis
 ```
-
-## Key Design Decisions
-
-- Rows missing a category label or resume body text are dropped (required for supervised learning); other missing fields are imputed with explicit placeholders and an `was_imputed` flag.
-- Duplicates are detected via exact-hash matching and near-duplicate detection using TF-IDF cosine similarity (≥0.95 threshold).
-- Skills are standardized against an O*NET-informed synonym dictionary.
-- Numeric features (years of experience, word count) are scaled with `StandardScaler` for distance-based models, left unscaled for tree-based models.
-- Every cleaning action is logged to a `cleaning_log.csv` for auditability.
 
 ## Tools & Python Libraries
 
-pandas, numpy, re (regex), NLTK, spaCy, scikit-learn (`TfidfVectorizer`, `StandardScaler`), fuzzywuzzy / difflib, langdetect
+pandas, matplotlib, seaborn, wordcloud, scikit-learn (`TfidfVectorizer`, `TSNE`), umap-learn
 
 ## Estimated Effort
 
-30–35 hours across research, implementation of cleaning/transformation logic, documentation, and validation.
+30–35 hours across reviewing EDA best practices, drafting the visualization plan, writing chart rationale, and refinement.
 
 ## Next Steps
 
-Week 3 will perform exploratory data analysis on this cleaned dataset to inform feature selection and modeling decisions.
+Week 4 will use these insights (class imbalance, category vocabulary overlap, length patterns) to guide feature engineering and model selection.
 
 ## Author
 
